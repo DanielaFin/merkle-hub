@@ -4,10 +4,11 @@ function Navbar() {
   const location = useLocation()
 
   const links = [
-    { name: 'Events', path: '/events' },
-    { name: 'My Hub', path: '/myhub' },
-    { name: 'Manage', path: '/manage' },
-  ]
+  { name: 'Home', path: '/' },
+  { name: 'Events', path: '/events' },
+  { name: 'My Hub', path: '/myhub' },
+  { name: 'Manage', path: '/manage' },
+]
 
   return (
     <nav className="navbar">
@@ -35,7 +36,7 @@ function Navbar() {
             <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
           </svg>
         </div>
-        <div className="navbar-avatar">DS</div>
+        <Link to="/myhub" className="navbar-avatar">DS</Link>
       </div>
     </nav>
   )
