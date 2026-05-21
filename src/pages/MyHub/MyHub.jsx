@@ -27,25 +27,25 @@ const activityItems = [
   {
     id: 1,
     text: 'Registration for',
-    highlight: 'Pottery Workshop',
+    highlight: 'QA Lunch @Bouillon',
     suffix: 'confirmed',
     color: '#97C459',
     time: '2h ago',
   },
   {
     id: 2,
-    text: 'New',
-    highlight: 'Creative',
-    suffix: 'event added — Wine & Paint',
+    text: 'Saved',
+    highlight: 'New dietary preference',
+    suffix: 'vegan',
     color: '#D85A30',
     time: 'Yesterday',
   },
   {
     id: 3,
     text: 'Registration for',
-    highlight: 'QA Lunch',
+    highlight: 'Coffee & Croissants☕️',
     suffix: 'confirmed',
-    color: '#6B6B85',
+    color: '#97C459',
     time: '3 days ago',
   },
 ]
@@ -75,9 +75,7 @@ function MyHub() {
           <h1 className="myhub-name">{user.name}</h1>
           <p className="myhub-role">{user.role} - {user.office}</p>
         </div>
-        <button className="myhub-edit-btn">
-          ✏️ Edit
-        </button>
+        <button className="myhub-edit-btn">✏️ Edit</button>
       </div>
 
       <div className="myhub-stats">
@@ -178,7 +176,32 @@ function MyHub() {
 
         <div className="myhub-right">
           <div className="myhub-panel">
-            <p className="myhub-panel-title">My preferences</p>
+            <div className="myhub-panel-header">
+              <span className="myhub-panel-title">My preferences</span> 
+              <button className="myhub-edit-small">✏️ Edit</button>
+            </div>
+            
+            <div className="myhub-pref-section">
+              <p className="myhub-pref-label">Dietary preference</p>
+              <div className="myhub-tags" style={{marginTop:'8px'}}>
+                <span className="myhub-tag myhub-tag-pink">{user.dietaryPreference}</span>
+              </div>
+            </div>
+
+            <div className="myhub-pref-divider"></div>
+
+            <div className="myhub-pref-section">
+              <p className="myhub-pref-label">Favourite categories</p>
+              <div className="myhub-tags" style={{marginTop:'8px'}}>
+                {user.favouriteCategories.map(cat => (
+                  <span key={cat} className="myhub-tag myhub-tag-pink">{cat}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="myhub-pref-divider"></div>
+
+            <p className="myhub-notif-title">Notification settings</p>
 
             <div className="myhub-pref-item">
               <div>
@@ -206,7 +229,7 @@ function MyHub() {
               </div>
             </div>
 
-            <div className="myhub-pref-item">
+            <div className="myhub-pref-item" style={{borderBottom:'none'}}>
               <div>
                 <p className="myhub-pref-label">Calendar sync</p>
                 <p className="myhub-pref-sub">Add events to Outlook</p>
@@ -216,30 +239,6 @@ function MyHub() {
                 onClick={() => setCalendarSync(p => !p)}
               >
                 <div className="toggle-dot"></div>
-              </div>
-            </div>
-
-            <div className="myhub-pref-divider"></div>
-
-            <div className="myhub-pref-section">
-              <div className="myhub-pref-section-header">
-                <p className="myhub-pref-label">Dietary preference</p>
-                <button className="myhub-edit-small">✏️ Edit</button>
-              </div>
-              <div className="myhub-tags">
-                <span className="myhub-tag myhub-tag-pink">{user.dietaryPreference}</span>
-              </div>
-            </div>
-
-            <div className="myhub-pref-divider"></div>
-
-            <div className="myhub-pref-section">
-              <p className="myhub-pref-label">Favourite categories</p>
-              <div className="myhub-tags" style={{marginTop:'8px'}}>
-                {user.favouriteCategories.map(cat => (
-                  <span key={cat} className="myhub-tag myhub-tag-pink">{cat}</span>
-                ))}
-                <span className="myhub-tag myhub-tag-add">+ Add</span>
               </div>
             </div>
           </div>
