@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { events, filters, user } from '../../data/events'
 
 const calendarDays = [
@@ -20,8 +20,16 @@ const eventDates = [8, 11, 15, 17, 23, 26]
 const todayDate = 8
 
 function Events() {
+  const [searchParams] = useSearchParams()
   const [activeFilter, setActiveFilter] = useState('All')
   const [selectedDate, setSelectedDate] = useState(null)
+
+  useEffect(() => {
+    const category = searchParams.get('category')
+    if (category) {
+      setActiveFilter(category)
+    }
+  }, [searchParams])
 
   const filteredEvents = events.filter(event => {
     const matchesFilter =
@@ -173,19 +181,19 @@ function Events() {
               ))}
             </div>
             <div className="calendar-legend">
-  <div className="calendar-legend-item">
-    <span className="calendar-legend-dot"></span>
-    <span className="calendar-legend-text">Has event(s)</span>
-  </div>
-  <div className="calendar-legend-item">
-    <span className="calendar-legend-today"></span>
-    <span className="calendar-legend-text">Current day</span>
-  </div>
-  <div className="calendar-legend-item">
-    <span className="calendar-legend-selected"></span>
-    <span className="calendar-legend-text">Selected day</span>
-  </div>
-</div>
+              <div className="calendar-legend-item">
+                <span className="calendar-legend-dot"></span>
+                <span className="calendar-legend-text">Has event(s)</span>
+              </div>
+              <div className="calendar-legend-item">
+                <span className="calendar-legend-today"></span>
+                <span className="calendar-legend-text">Current day</span>
+              </div>
+              <div className="calendar-legend-item">
+                <span className="calendar-legend-selected"></span>
+                <span className="calendar-legend-text">Selected day</span>
+              </div>
+            </div>
           </div>
 
           <div className="suggested-panel">

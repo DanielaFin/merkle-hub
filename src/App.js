@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import Events from './pages/Events/Events'
+import EventDetail from './pages/Events/EventDetail'
 import MyHub from './pages/MyHub/MyHub'
 import Manage from './pages/Manage/Manage'
 import Navbar from './components/layout/Navbar'
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events />} />
+        <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/myhub" element={<MyHub />} />
         <Route path="/manage" element={<Manage />} />
       </Routes>
