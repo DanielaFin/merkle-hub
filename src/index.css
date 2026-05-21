@@ -379,7 +379,7 @@ input, textarea, select {
 
 .events-main {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
@@ -415,6 +415,7 @@ input, textarea, select {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  align-items: start;
 }
 
 .event-card {
@@ -1468,4 +1469,79 @@ input, textarea, select {
 
 .manage-btn-publish:hover {
   background: var(--color-brand-hover);
+}
+
+.home-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* Join button hover */
+.btn-join:hover {
+  background: var(--color-brand);
+  color: #fff;
+  border-color: var(--color-brand);
+}
+
+/* Category tile hover */
+.category-card:hover {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+  cursor: pointer;
+}
+
+.category-card:hover .category-name {
+  color: #fff;
+}
+
+.category-card:hover .category-count {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Calendar legend */
+.calendar-legend {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 0.5px solid var(--color-border);
+}
+
+.calendar-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-legend-text {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.calendar-legend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-brand);
+  flex-shrink: 0;
+}
+
+.calendar-legend-today {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  background: var(--color-brand);
+  flex-shrink: 0;
+}
+
+.calendar-legend-selected {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid var(--color-brand);
+  flex-shrink: 0;
 }

@@ -75,7 +75,6 @@ function MyHub() {
           <h1 className="myhub-name">{user.name}</h1>
           <p className="myhub-role">{user.role} - {user.office}</p>
         </div>
-        <button className="myhub-edit-btn">✏️ Edit</button>
       </div>
 
       <div className="myhub-stats">
@@ -180,7 +179,7 @@ function MyHub() {
               <span className="myhub-panel-title">My preferences</span> 
               <button className="myhub-edit-small">✏️ Edit</button>
             </div>
-            
+
             <div className="myhub-pref-section">
               <p className="myhub-pref-label">Dietary preference</p>
               <div className="myhub-tags" style={{marginTop:'8px'}}>

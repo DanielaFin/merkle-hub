@@ -125,7 +125,7 @@ function Events() {
                         </button>
                       ) : user.registeredEvents.includes(event.id) ? (
                         <button className="btn-joined">
-                          ✓ Joined
+                          Joined
                         </button>
                       ) : (
                         <button className="btn-join">Join</button>
@@ -172,6 +172,20 @@ function Events() {
                 </div>
               ))}
             </div>
+            <div className="calendar-legend">
+  <div className="calendar-legend-item">
+    <span className="calendar-legend-dot"></span>
+    <span className="calendar-legend-text">Has event(s)</span>
+  </div>
+  <div className="calendar-legend-item">
+    <span className="calendar-legend-today"></span>
+    <span className="calendar-legend-text">Current day</span>
+  </div>
+  <div className="calendar-legend-item">
+    <span className="calendar-legend-selected"></span>
+    <span className="calendar-legend-text">Selected day</span>
+  </div>
+</div>
           </div>
 
           <div className="suggested-panel">

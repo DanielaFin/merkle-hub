@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { events, categories, user } from '../../data/events'
 
 function Home() {
-  const upcomingEvents = events.slice(0, 3)
+  const upcomingEvents = events.slice(0, 4)
   const today = new Date()
   const dateString = today.toLocaleDateString('en-GB', {
     weekday: 'long',
@@ -68,7 +68,7 @@ function Home() {
           <h2 className="section-title">Coming up next</h2>
           <Link to="/events" className="section-link">View calendar →</Link>
         </div>
-        <div className="event-cards-grid">
+        <div className="home-cards-grid">
   {upcomingEvents.map(event => (
     <Link to={`/events/${event.id}`} key={event.id} className="event-card">
       <div className="event-card-img">
@@ -88,7 +88,7 @@ function Home() {
           {event.status === 'Full' ? (
             <button className="btn-fully-booked" disabled>Fully Booked</button>
           ) : user.registeredEvents.includes(event.id) ? (
-            <button className="btn-joined">✓ Joined</button>
+            <button className="btn-joined">Joined</button>
           ) : (
             <button className="btn-join">Join</button>
           )}
