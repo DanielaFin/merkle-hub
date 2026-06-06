@@ -5,11 +5,13 @@ import EventDetail from './pages/Events/EventDetail'
 import MyHub from './pages/MyHub/MyHub'
 import Manage from './pages/Manage/Manage'
 import Navbar from './components/layout/Navbar'
+import MobileNav from './components/layout/MobileNav'
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <MobileNav />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events />} />
