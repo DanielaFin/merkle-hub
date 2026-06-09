@@ -31,11 +31,11 @@ function Home() {
         </div>
         <div className="hero-right">
           <div className="stat-card">
-            <span className="stat-val">{events.length}</span>
+            <span className="stat-val">2</span>
             <span className="stat-label">Events this week</span>
           </div>
           <div className="stat-card">
-            <span className="stat-val">{user.registeredEvents.length}</span>
+            <span className="stat-val">1</span>
             <span className="stat-label">You are joining</span>
           </div>
         </div>

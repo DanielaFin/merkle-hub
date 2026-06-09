@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { events, user } from '../../data/events'
+import PreferencesPanel from '../../components/PreferencesPanel.jsx'
 
 const registeredEvents = events.filter(e => user.registeredEvents.includes(e.id))
 
@@ -27,25 +28,25 @@ const activityItems = [
   {
     id: 1,
     text: 'Registration for',
-    highlight: 'QA Lunch @Bouillon',
+    highlight: 'Pottery Workshop',
     suffix: 'confirmed',
     color: '#97C459',
     time: '2h ago',
   },
   {
     id: 2,
-    text: 'Saved',
-    highlight: 'New dietary preference',
-    suffix: 'vegan',
+    text: 'New',
+    highlight: 'Creative',
+    suffix: 'event added — Wine & Paint',
     color: '#D85A30',
     time: 'Yesterday',
   },
   {
     id: 3,
     text: 'Registration for',
-    highlight: 'Coffee & Croissants☕️',
+    highlight: 'QA Lunch',
     suffix: 'confirmed',
-    color: '#97C459',
+    color: '#6B6B85',
     time: '3 days ago',
   },
 ]
@@ -55,6 +56,7 @@ function MyHub() {
   const [emailReminders, setEmailReminders] = useState(true)
   const [teamsNotifs, setTeamsNotifs] = useState(true)
   const [calendarSync, setCalendarSync] = useState(false)
+  const [prefOpen, setPrefOpen] = useState(false)
 
   const nextEvent = registeredEvents[0]
   const daysToGo = user.nextEvent.daysTo
@@ -86,9 +88,11 @@ function MyHub() {
           <span className="myhub-stat-val">{user.upcomingEvents}</span>
           <span className="myhub-stat-label">Upcoming events</span>
         </div>
-        <div className="myhub-stat myhub-stat-highlight">
-          <span className="myhub-stat-val myhub-stat-days">{daysToGo} days to go</span>
-          <span className="myhub-stat-label">{nextEvent?.title}</span>
+        <div className="myhub-stat-countdown">
+          <div className="myhub-stat myhub-stat-highlight">
+            <span className="myhub-stat-val myhub-stat-days">{daysToGo} days to go</span>
+            <span className="myhub-stat-label">{nextEvent?.title}</span>
+          </div>
         </div>
       </div>
 
@@ -176,8 +180,13 @@ function MyHub() {
         <div className="myhub-right">
           <div className="myhub-panel">
             <div className="myhub-panel-header">
-              <span className="myhub-panel-title">My preferences</span> 
-              <button className="myhub-edit-small">✏️ Edit</button>
+              <span className="myhub-panel-title">My preferences</span>
+              <button
+                className="myhub-edit-small"
+                onClick={() => setPrefOpen(true)}
+              >
+                ✏️ Edit
+              </button>
             </div>
 
             <div className="myhub-pref-section">
@@ -263,6 +272,10 @@ function MyHub() {
           </div>
         </div>
       </div>
+
+      {prefOpen && (
+        <PreferencesPanel onClose={() => setPrefOpen(false)} />
+      )}
     </div>
   )
 }
