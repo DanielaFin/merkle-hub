@@ -6,6 +6,10 @@ function EventDetail() {
   const { id } = useParams()
   const event = events.find(e => e.id === parseInt(id))
   const [selectedOptions, setSelectedOptions] = useState({})
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [isRegistered, setIsRegistered] = useState(
+    event ? user.registeredEvents.includes(event.id) : false
+  )
 
   if (!event) {
     return (
@@ -21,7 +25,6 @@ function EventDetail() {
     )
   }
 
-  const isRegistered = user.registeredEvents.includes(event.id)
   const isFull = event.status === 'Full'
   const fillPct = Math.round((event.registered / event.spots) * 100)
   const attendees = ['DS', 'NP', 'BH', 'NS', 'FH', 'MJ']
@@ -61,28 +64,28 @@ function EventDetail() {
 
               <div className="ed-meta-grid">
                 <div className="ed-meta-item">
-                  <span className="ed-meta-icon">📅</span>
+                  <i className="ti ti-calendar ed-meta-icon" aria-hidden="true"></i>
                   <div>
                     <p className="ed-meta-label">Date</p>
                     <p className="ed-meta-val">{event.displayDate} 2026</p>
                   </div>
                 </div>
                 <div className="ed-meta-item">
-                  <span className="ed-meta-icon">🕐</span>
+                  <i className="ti ti-clock ed-meta-icon" aria-hidden="true"></i>
                   <div>
                     <p className="ed-meta-label">Time</p>
                     <p className="ed-meta-val">{event.time}</p>
                   </div>
                 </div>
                 <div className="ed-meta-item">
-                  <span className="ed-meta-icon">📍</span>
+                  <i className="ti ti-map-pin ed-meta-icon" aria-hidden="true"></i>
                   <div>
                     <p className="ed-meta-label">Location</p>
                     <p className="ed-meta-val">{event.location}</p>
                   </div>
                 </div>
                 <div className="ed-meta-item">
-                  <span className="ed-meta-icon">💰</span>
+                  <i className="ti ti-coin ed-meta-icon" aria-hidden="true"></i>
                   <div>
                     <p className="ed-meta-label">Cost</p>
                     <p className="ed-meta-val">{event.cost}</p>
@@ -185,7 +188,15 @@ function EventDetail() {
                 </>
               )}
 
-              <button className="ed-btn-register">Register</button>
+              <button
+                className="ed-btn-register"
+                onClick={() => {
+                  setIsRegistered(true)
+                  setShowConfirmation(true)
+                }}
+              >
+                Register
+              </button>
               <p className="ed-confirm-note">
                 You'll be notified on Merkle Hub once registration is confirmed.
               </p>
@@ -196,35 +207,104 @@ function EventDetail() {
             <p className="ed-panel-title">Event details</p>
             <div className="ed-details-list">
               <div className="ed-details-row">
-                <span className="ed-details-icon">👥</span>
+                <i className="ti ti-users ed-details-icon" aria-hidden="true"></i>
                 <span className="ed-details-label">Capacity</span>
                 <span className="ed-details-val">{event.spots} people</span>
               </div>
               <div className="ed-details-row">
-                <span className="ed-details-icon">⏱️</span>
+                <i className="ti ti-clock ed-details-icon" aria-hidden="true"></i>
                 <span className="ed-details-label">Duration</span>
                 <span className="ed-details-val">2.5hrs</span>
               </div>
               <div className="ed-details-row">
-                <span className="ed-details-icon">🕐</span>
+                <i className="ti ti-calendar-off ed-details-icon" aria-hidden="true"></i>
                 <span className="ed-details-label">Deadline</span>
                 <span className="ed-details-val">
                   {parseInt(event.displayDate.split(' ')[1]) - 2} {event.displayDate.split(' ')[2]}
                 </span>
               </div>
               <div className="ed-details-row">
-                <span className="ed-details-icon">👤</span>
+                <i className="ti ti-user ed-details-icon" aria-hidden="true"></i>
                 <span className="ed-details-label">Organised by</span>
                 <span className="ed-details-val">{event.organiser}</span>
               </div>
             </div>
             <div className="ed-action-btns">
-              <button className="ed-action-btn">📅 Add to calendar</button>
-              <button className="ed-action-btn">↗ Share</button>
+              <button
+                className="ed-action-btn"
+                onClick={() => {
+                  const title = encodeURIComponent(event.title)
+                  const details = encodeURIComponent(event.description)
+                  const location = encodeURIComponent(event.location)
+                  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}`
+                  window.open(url, '_blank')
+                }}
+              >
+                <i className="ti ti-calendar-plus" aria-hidden="true"></i> Add to calendar
+              </button>
+              <button
+                className="ed-action-btn"
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: event.title,
+                      text: `${event.title} — ${event.displayDate} at ${event.location}`,
+                      url: window.location.href,
+                    })
+                  } else {
+                    navigator.clipboard.writeText(window.location.href)
+                    alert('Link copied to clipboard')
+                  }
+                }}
+              >
+                <i className="ti ti-share" aria-hidden="true"></i> Share
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      {showConfirmation && (
+        <>
+          <div
+            className="notif-overlay"
+            onClick={() => setShowConfirmation(false)}
+          ></div>
+          <div className="confirm-modal">
+            <div className="confirm-modal-icon">
+              <i className="ti ti-check" aria-hidden="true"></i>
+            </div>
+            <h2 className="confirm-modal-title">You're going!</h2>
+            <p className="confirm-modal-sub">
+              Your spot has been confirmed. We'll send you a reminder before the event.
+            </p>
+            <div className="confirm-modal-event">
+              <div className="confirm-modal-dot"></div>
+              <div>
+                <p className="confirm-modal-event-name">{event.title}</p>
+                <p className="confirm-modal-event-meta">
+                  {event.displayDate} · {event.time} · {event.location}
+                </p>
+              </div>
+            </div>
+            <div className="confirm-modal-btns">
+              <button
+                className="confirm-btn-ghost"
+                onClick={() => setShowConfirmation(false)}
+              >
+                Stay on page
+              </button>
+              <Link
+                to="/myhub"
+                className="confirm-btn-primary"
+                onClick={() => setShowConfirmation(false)}
+              >
+                View My Hub
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
