@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ManageModal from '../../components/ManageModal'
 
 const manageEvents = [
   {
@@ -104,19 +105,22 @@ function Manage() {
     category: '',
   })
 
+  const [manageModal, setManageModal] = useState(null)
+
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   const handleSaveDraft = () => {
-    alert('Event saved as draft.')
-  }
+  setManageModal('draft')
+}
 
-  const handlePublish = () => {
-    alert('Event published!')
-  }
+const handlePublish = () => {
+  setManageModal('publish')
+}
 
   const displayEvents = activeTab === 'upcoming' ? manageEvents : pastManageEvents
+
 
   return (
     <div className="page">
@@ -301,6 +305,12 @@ function Manage() {
           </div>
         </div>
       </div>
+      {manageModal && (
+  <ManageModal
+    type={manageModal}
+    onClose={() => setManageModal(null)}
+  />
+)}
     </div>
   )
 }

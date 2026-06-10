@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { events, user } from '../../data/events'
-import PreferencesPanel from '../../components/PreferencesPanel.jsx'
+import PreferencesPanel from '../../components/PreferencesPanel'
+import CancelModal from '../../components/CancelModal'
 
-const registeredEvents = events.filter(e => user.registeredEvents.includes(e.id))
+const initialRegisteredEvents = events.filter(e => user.registeredEvents.includes(e.id))
 
 const pastEvents = [
   {
@@ -57,8 +58,10 @@ function MyHub() {
   const [teamsNotifs, setTeamsNotifs] = useState(true)
   const [calendarSync, setCalendarSync] = useState(false)
   const [prefOpen, setPrefOpen] = useState(false)
+  const [cancelEvent, setCancelEvent] = useState(null)
+  const [registeredList, setRegisteredList] = useState(initialRegisteredEvents)
 
-  const nextEvent = registeredEvents[0]
+  const nextEvent = registeredList[0]
   const daysToGo = user.nextEvent.daysTo
 
   return (
@@ -85,7 +88,7 @@ function MyHub() {
           <span className="myhub-stat-label">Events attended</span>
         </div>
         <div className="myhub-stat">
-          <span className="myhub-stat-val">{user.upcomingEvents}</span>
+          <span className="myhub-stat-val">{registeredList.length}</span>
           <span className="myhub-stat-label">Upcoming events</span>
         </div>
         <div className="myhub-stat-countdown">
@@ -117,7 +120,7 @@ function MyHub() {
             {activeTab === 'upcoming' && (
               <div>
                 <p className="myhub-list-label">Registered events</p>
-                {registeredEvents.length === 0 ? (
+                {registeredList.length === 0 ? (
                   <div className="myhub-empty">
                     <p className="myhub-empty-text">No upcoming events.</p>
                     <Link to="/events" className="btn-primary" style={{display:'inline-block',marginTop:'12px'}}>
@@ -125,7 +128,7 @@ function MyHub() {
                     </Link>
                   </div>
                 ) : (
-                  registeredEvents.map(event => (
+                  registeredList.map(event => (
                     <div key={event.id} className="myhub-event-row">
                       <div className="myhub-event-date">
                         <span className="myhub-event-date-num">
@@ -142,7 +145,12 @@ function MyHub() {
                         </p>
                       </div>
                       <span className="badge-confirmed">Confirmed</span>
-                      <button className="btn-cancel">Cancel</button>
+                      <button
+                        className="btn-cancel"
+                        onClick={() => setCancelEvent(event)}
+                      >
+                        Cancel
+                      </button>
                     </div>
                   ))
                 )}
@@ -275,6 +283,17 @@ function MyHub() {
 
       {prefOpen && (
         <PreferencesPanel onClose={() => setPrefOpen(false)} />
+      )}
+
+      {cancelEvent && (
+        <CancelModal
+          event={cancelEvent}
+          onClose={() => setCancelEvent(null)}
+          onConfirm={() => {
+            setRegisteredList(prev => prev.filter(e => e.id !== cancelEvent.id))
+            setCancelEvent(null)
+          }}
+        />
       )}
     </div>
   )
