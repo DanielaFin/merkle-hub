@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import DeleteModal from '../../components/DeleteModal'
+import ParticipantsModal from '../../components/ParticipantsModal'
+import EditEventModal from '../../components/EditEventModal'
 import ManageModal from '../../components/ManageModal'
 
-const manageEvents = [
+const initialManageEvents = [
   {
     id: 1,
     title: 'QA Lunch @Bouillon',
@@ -94,6 +97,11 @@ function ProgressBar({ registered, capacity }) {
 
 function Manage() {
   const [activeTab, setActiveTab] = useState('upcoming')
+  const [eventList, setEventList] = useState(initialManageEvents)
+  const [deleteEvent, setDeleteEvent] = useState(null)
+  const [participantsEvent, setParticipantsEvent] = useState(null)
+  const [editEvent, setEditEvent] = useState(null)
+  const [manageModal, setManageModal] = useState(null)
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -105,22 +113,19 @@ function Manage() {
     category: '',
   })
 
-  const [manageModal, setManageModal] = useState(null)
-
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   const handleSaveDraft = () => {
-  setManageModal('draft')
-}
+    setManageModal('draft')
+  }
 
-const handlePublish = () => {
-  setManageModal('publish')
-}
+  const handlePublish = () => {
+    setManageModal('publish')
+  }
 
-  const displayEvents = activeTab === 'upcoming' ? manageEvents : pastManageEvents
-
+  const displayEvents = activeTab === 'upcoming' ? eventList : pastManageEvents
 
   return (
     <div className="page">
@@ -187,9 +192,27 @@ const handlePublish = () => {
                   />
                   <StatusBadge status={event.status} />
                   <div className="manage-actions">
-                    <button className="manage-action-btn" title="Edit">✏️</button>
-                    <button className="manage-action-btn" title="View participants">👤</button>
-                    <button className="manage-action-btn" title="Delete">🗑️</button>
+                    <button
+                      className="manage-action-btn"
+                      title="Edit"
+                      onClick={() => setEditEvent(event)}
+                    >
+                      <i className="ti ti-edit" aria-hidden="true"></i>
+                    </button>
+                    <button
+                      className="manage-action-btn"
+                      title="View participants"
+                      onClick={() => setParticipantsEvent(event)}
+                    >
+                      <i className="ti ti-users" aria-hidden="true"></i>
+                    </button>
+                    <button
+                      className="manage-action-btn"
+                      title="Delete"
+                      onClick={() => setDeleteEvent(event)}
+                    >
+                      <i className="ti ti-trash" aria-hidden="true"></i>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -305,12 +328,38 @@ const handlePublish = () => {
           </div>
         </div>
       </div>
+
       {manageModal && (
-  <ManageModal
-    type={manageModal}
-    onClose={() => setManageModal(null)}
-  />
-)}
+        <ManageModal
+          type={manageModal}
+          onClose={() => setManageModal(null)}
+        />
+      )}
+
+      {deleteEvent && (
+        <DeleteModal
+          event={deleteEvent}
+          onClose={() => setDeleteEvent(null)}
+          onConfirm={() => {
+            setEventList(prev => prev.filter(e => e.id !== deleteEvent.id))
+            setDeleteEvent(null)
+          }}
+        />
+      )}
+
+      {participantsEvent && (
+        <ParticipantsModal
+          event={participantsEvent}
+          onClose={() => setParticipantsEvent(null)}
+        />
+      )}
+
+      {editEvent && (
+        <EditEventModal
+          event={editEvent}
+          onClose={() => setEditEvent(null)}
+        />
+      )}
     </div>
   )
 }

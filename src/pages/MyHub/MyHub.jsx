@@ -190,11 +190,11 @@ function MyHub() {
             <div className="myhub-panel-header">
               <span className="myhub-panel-title">My preferences</span>
               <button
-                className="myhub-edit-small"
-                onClick={() => setPrefOpen(true)}
+              className="myhub-edit-small"
+              onClick={() => setPrefOpen(true)}
               >
-                ✏️ Edit
-              </button>
+  <i className="ti ti-edit" style={{fontSize:'12px'}} aria-hidden="true"></i> Edit
+</button>
             </div>
 
             <div className="myhub-pref-section">

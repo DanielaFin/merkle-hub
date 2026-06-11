@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function ManageModal({ type, onClose }) {
   const isDraft = type === 'draft'
 
@@ -29,13 +31,32 @@ function ManageModal({ type, onClose }) {
         <p className="confirm-modal-sub">
           {isDraft
             ? 'Your event has been saved as a draft. You can continue editing and publish it when ready.'
-            : 'Your event is now live and visible to all Merkle employees. Registrations will appear in your event table.'}
+            : 'Your event is live and open for registrations.'}
         </p>
 
-        <div className="confirm-modal-btns" style={{gridTemplateColumns:'1fr'}}>
-          <button className="confirm-btn-primary" onClick={onClose}>
-            {isDraft ? 'Back to Manage' : 'View your events'}
-          </button>
+        <div className="confirm-modal-btns">
+          {isDraft ? (
+            <button
+              className="confirm-btn-primary"
+              style={{gridColumn:'1/-1'}}
+              onClick={onClose}
+            >
+              Back to Manage
+            </button>
+          ) : (
+            <>
+              <button className="confirm-btn-ghost" onClick={onClose}>
+                Stay on page
+              </button>
+              <Link
+                to="/events"
+                className="confirm-btn-primary"
+                onClick={onClose}
+              >
+                View the event
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </>
